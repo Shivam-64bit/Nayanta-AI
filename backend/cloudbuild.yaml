@@ -1,0 +1,52 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/nayanta-backend:$SHORT_SHA'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/nayanta-backend:latest'
+      - './backend'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/nayanta-backend:$SHORT_SHA'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/nayanta-backend:latest'
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'nayanta-backend'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/nayanta-backend:$SHORT_SHA'
+      - '--region'
+      - 'asia-south1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--min-instances'
+      - '1'
+      - '--max-instances'
+      - '10'
+      - '--memory'
+      - '512Mi'
+      - '--cpu'
+      - '1'
+      - '--port'
+      - '8080'
+      - '--set-env-vars'
+      - 'NODE_ENV=production'
+
+images:
+  - 'gcr.io/$PROJECT_ID/nayanta-backend:$SHORT_SHA'
+  - 'gcr.io/$PROJECT_ID/nayanta-backend:latest'
+
+options:
+  logging: CLOUD_LOGGING_ONLY

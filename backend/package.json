@@ -1,0 +1,50 @@
+{
+  "name": "nayanta-backend",
+  "version": "1.0.0",
+  "description": "Nayanta AI Backend — Infrastructure, API, and Queue Management",
+  "main": "dist/server.js",
+  "scripts": {
+    "start": "node dist/server.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "build": "tsc",
+    "lint": "eslint . --ext .ts",
+    "test": "jest --passWithNoTests"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "bullmq": "^5.12.0",
+    "firebase-admin": "^12.6.0",
+    "helmet": "^8.0.0",
+    "cors": "^2.8.5",
+    "zod": "^3.23.8",
+    "express-rate-limit": "^7.4.0",
+    "dotenv": "^16.4.5",
+    "ioredis": "^5.4.1",
+    "@google-cloud/storage": "^7.13.0",
+    "@google-cloud/secret-manager": "^5.6.0",
+    "@google/generative-ai": "^0.21.0",
+    "twilio": "^5.3.0",
+    "pdfkit": "^0.15.0",
+    "pdf-parse": "^1.1.1",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "@types/node": "^20.16.5",
+    "@types/express": "^4.17.21",
+    "@types/cors": "^2.8.17",
+    "@types/pdfkit": "^0.13.5",
+    "@types/pdf-parse": "^1.1.4",
+    "@types/uuid": "^10.0.0",
+    "ts-node-dev": "^2.0.0",
+    "eslint": "^8.57.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "@types/jest": "^29.5.13"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
