@@ -2,8 +2,8 @@
  * queue/processors/rejection.processor.ts
  *
  * BullMQ worker for the "rejection" queue.
- * Calls Person 3's RejectionAgent.
- * Writes the analysis and grievance draft to Firestore applications collection.
+ * Calls Person 2's RejectionAgent.
+ * Writes the analysis and grievance info to Firestore applications collection.
  */
 
 import { Worker, Job } from 'bullmq';
@@ -13,10 +13,7 @@ import { getFirestore } from '../../config/firestore.config';
 import { COLLECTIONS, QUEUE } from '../../config/constants';
 import { RejectionAgentInput, RejectionAgentOutput } from '../../schemas';
 
-// TODO: Replace with Person 3's real agent once available
-async function runRejectionAgent(_input: RejectionAgentInput): Promise<RejectionAgentOutput> {
-  throw new Error('RejectionAgent is not yet implemented by Person 3. Connect agent here.');
-}
+import { runRejectionAgent } from '../../agents/RejectionAgent';
 
 let worker: Worker | null = null;
 
@@ -37,23 +34,23 @@ export function startRejectionProcessor(): void {
       const output: RejectionAgentOutput = await runRejectionAgent(input);
 
       const db = getFirestore();
-      
-      const updateData: any = {
+
+      const updateData: Record<string, unknown> = {
         rejectionAnalysis: {
-          confidenceScore: output.confidenceScore,
-          suggestedAction: output.suggestedAction,
-          reasoning: output.reasoning,
+          explanation: output.plainLanguageExplanation,
+          reapplyRecommended: output.reapplyRecommended,
+          fixedFields: output.fixedFields,
         },
         updatedAt: new Date().toISOString(),
       };
 
-      if (output.grievanceDraftUrl) {
-        updateData.grievanceDraftUrl = output.grievanceDraftUrl;
+      if (output.grievanceId) {
+        updateData.grievanceId = output.grievanceId;
       }
 
       await db.collection(COLLECTIONS.APPLICATIONS).doc(input.applicationId).set(updateData, { merge: true });
 
-      console.log(`[RejectionProcessor] Job ${job.id} completed. Action: ${output.suggestedAction}`);
+      console.log(`[RejectionProcessor] Job ${job.id} completed. Reapply: ${output.reapplyRecommended}`);
       return output;
     },
     { connection, concurrency: QUEUE.WORKER_CONCURRENCY_LOW },
@@ -69,3 +66,4 @@ export function startRejectionProcessor(): void {
 export async function stopRejectionProcessor(): Promise<void> {
   await worker?.close();
 }
+

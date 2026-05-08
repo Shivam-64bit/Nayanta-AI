@@ -13,10 +13,7 @@ import { getFirestore } from '../../config/firestore.config';
 import { COLLECTIONS, QUEUE } from '../../config/constants';
 import { DiscoveryAgentInput, DiscoveryAgentOutput } from '../../schemas';
 
-// TODO: Replace with Person 2's real agent once available
-async function runDiscoveryAgent(_input: DiscoveryAgentInput): Promise<DiscoveryAgentOutput> {
-  throw new Error('DiscoveryAgent is not yet implemented by Person 2. Connect agent here.');
-}
+import { runDiscoveryAgent } from '../../agents/DiscoveryAgent';
 
 let worker: Worker | null = null;
 

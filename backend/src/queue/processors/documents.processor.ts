@@ -13,10 +13,7 @@ import { getFirestore } from '../../config/firestore.config';
 import { COLLECTIONS, QUEUE } from '../../config/constants';
 import { DocAgentInput, DocAgentOutput } from '../../schemas';
 
-// TODO: Replace with Person 2's real agent once available
-async function runDocIntelligenceAgent(_input: DocAgentInput): Promise<DocAgentOutput> {
-  throw new Error('DocIntelligenceAgent is not yet implemented by Person 2. Connect agent here.');
-}
+import { runDocIntelligenceAgent } from '../../agents/DocIntelligenceAgent';
 
 let worker: Worker | null = null;
 

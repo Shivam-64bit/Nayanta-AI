@@ -13,10 +13,7 @@ import { getFirestore } from '../../config/firestore.config';
 import { COLLECTIONS, QUEUE } from '../../config/constants';
 import { TrackingAgentInput, TrackingAgentOutput } from '../../schemas';
 
-// TODO: Replace with Person 3's real agent once available
-async function runTrackingAgent(_input: TrackingAgentInput): Promise<TrackingAgentOutput> {
-  throw new Error('TrackingAgent is not yet implemented by Person 3. Connect agent here.');
-}
+import { runTrackingAgent } from '../../agents/TrackingAgent';
 
 let worker: Worker | null = null;
 
@@ -40,7 +37,9 @@ export function startTrackingProcessor(): void {
       await db.collection(COLLECTIONS.APPLICATIONS).doc(input.applicationId).set(
         {
           state: output.currentState,
-          trackingHistory: output.history,
+          nspStatus: output.nspStatus,
+          pfmsStatus: output.pfmsStatus,
+          nextCheckAt: output.nextCheckAt,
           updatedAt: new Date().toISOString(),
         },
         { merge: true },

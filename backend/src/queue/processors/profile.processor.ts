@@ -13,11 +13,7 @@ import { getFirestore } from '../../config/firestore.config';
 import { COLLECTIONS, QUEUE } from '../../config/constants';
 import { ProfileAgentInput, ProfileAgentOutput } from '../../schemas';
 
-// TODO: Replace this import with Person 2's real agent once available
-// import { ProfileAgent } from '../../agents/ProfileAgent';
-async function runProfileAgent(_input: ProfileAgentInput): Promise<ProfileAgentOutput> {
-  throw new Error('ProfileAgent is not yet implemented by Person 2. Connect agent here.');
-}
+import { runProfileAgent } from '../../agents/ProfileAgent';
 
 let worker: Worker | null = null;
 

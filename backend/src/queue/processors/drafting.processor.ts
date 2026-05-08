@@ -13,10 +13,7 @@ import { getFirestore } from '../../config/firestore.config';
 import { COLLECTIONS, QUEUE } from '../../config/constants';
 import { DraftingAgentInput, DraftingAgentOutput } from '../../schemas';
 
-// TODO: Replace with Person 2's real agent once available
-async function runDraftingAgent(_input: DraftingAgentInput): Promise<DraftingAgentOutput> {
-  throw new Error('DraftingAgent is not yet implemented by Person 2. Connect agent here.');
-}
+import { runDraftingAgent } from '../../agents/DraftingAgent';
 
 let worker: Worker | null = null;
 

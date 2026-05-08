@@ -13,10 +13,7 @@ import { getFirestore } from '../../config/firestore.config';
 import { COLLECTIONS, QUEUE } from '../../config/constants';
 import { FamilyAgentInput, FamilyAgentOutput } from '../../schemas';
 
-// TODO: Replace with Person 2's real agent once available
-async function runFamilyAgent(_input: FamilyAgentInput): Promise<FamilyAgentOutput> {
-  throw new Error('FamilyAgent is not yet implemented by Person 2. Connect agent here.');
-}
+import { runFamilyMapperAgent as runFamilyAgent } from '../../agents/FamilyMapperAgent';
 
 let worker: Worker | null = null;
 
@@ -39,14 +36,16 @@ export function startFamilyProcessor(): void {
       const db = getFirestore();
       await db.collection(COLLECTIONS.USERS).doc(input.primaryUserId).set(
         {
-          familyMatches: output.matches,
-          householdPotentialValue: output.householdPotentialValue,
+          familyMatches: output.perMemberMatches,
+          householdTotalPotentialValue: output.householdTotalPotentialValue,
+          applicationOrder: output.applicationOrder,
           updatedAt: new Date().toISOString(),
         },
         { merge: true },
       );
 
-      console.log(`[FamilyProcessor] Job ${job.id} completed. Found ${output.matches.length} family members.`);
+      const memberCount = Object.keys(output.perMemberMatches).length;
+      console.log(`[FamilyProcessor] Job ${job.id} completed. Processed ${memberCount} family members.`);
       return output;
     },
     { connection, concurrency: QUEUE.WORKER_CONCURRENCY_LOW },
