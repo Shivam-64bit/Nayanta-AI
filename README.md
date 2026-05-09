@@ -1,9 +1,6 @@
 # Nayanta AI
 
 <p>
-  <img alt="Status" src="https://img.shields.io/badge/status-active-success">
-  <img alt="Stage" src="https://img.shields.io/badge/stage-hackathon%20prototype-blue">
-  <img alt="License" src="https://img.shields.io/badge/license-MIT-black">
   <img alt="Node.js" src="https://img.shields.io/badge/Node.js-20-339933?logo=node.js&logoColor=white">
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white">
   <img alt="React" src="https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black">
